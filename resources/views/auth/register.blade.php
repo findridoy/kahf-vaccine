@@ -18,25 +18,36 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <!-- Password -->
         <div class="mt-4">
+            <x-input-label for="vaccine_center_id" :value="__('Vaccine Center')" />
+            <x-select-input required name="vaccine_center_id" id="vaccine_center_id"
+                class="block mt-1 w-full">
+                <option value="" selected disabled>Select One</option>
+                @foreach ($vaccine_centers as $vcenter)
+                    <option value="{{ $vcenter->id }}">{{ $vcenter->name }}</option>
+                @endforeach
+            </x-select-input>
+        </div>
+
+        <!-- Password -->
+        <!-- <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
 
             <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
                 autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+        </div> -->
 
         <!-- Confirm Password -->
-        <div class="mt-4">
+        <!-- <div class="mt-4">
             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
 
             <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password"
                 name="password_confirmation" required autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
+        </div> -->
 
 
         <div class="flex items-center justify-end mt-4">

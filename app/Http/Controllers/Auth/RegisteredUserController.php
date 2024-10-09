@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\VaccineCenter;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,7 +20,11 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view("auth.register");
+        $vaccineCenters = VaccineCenter::query()
+            ->select(["id", "name"])
+            ->limit(500)
+            ->get();
+        return view("auth.register", ["vaccine_centers" => $vaccineCenters]);
     }
 
     /**
@@ -27,10 +32,11 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): View
     {
         $request->validate([
             "name" => ["required", "string", "max:255"],
+            "vaccine_center_id" => ["required", "numeric"],
             "email" => [
                 "required",
                 "string",
@@ -39,19 +45,21 @@ class RegisteredUserController extends Controller
                 "max:255",
                 "unique:" . User::class,
             ],
-            "password" => ["required", "confirmed", Rules\Password::defaults()],
+            // 'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             "name" => $request->name,
             "email" => $request->email,
-            "password" => Hash::make($request->password),
+            "vaccine_center_id" => $request->vaccine_center_id,
+            // 'password' => Hash::make($request->password),
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
+        // Auth::login($user);
 
-        return redirect(route("dashboard", absolute: false));
+        // return redirect(route("dashboard", absolute: false));
+        return view("auth.registration-complete");
     }
 }
