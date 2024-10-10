@@ -18,15 +18,24 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
+        <!-- NID -->
+        <div class="mt-4">
+            <x-input-label for="nid" :value="__('NID Number')" />
+            <x-text-input id="nid" class="block mt-1 w-full" type="number" name="nid" :value="old('nid')"
+                required />
+            <x-input-error :messages="$errors->get('nid')" class="mt-2" />
+        </div>
+
+        {{-- Veccine Center id --}}
         <div class="mt-4">
             <x-input-label for="vaccine_center_id" :value="__('Vaccine Center')" />
-            <x-select-input required name="vaccine_center_id" id="vaccine_center_id"
-                class="block mt-1 w-full">
+            <x-select-input required name="vaccine_center_id" id="vaccine_center_id" class="block mt-1 w-full" :value="old('vaccine_center_id')">
                 <option value="" selected disabled>Select One</option>
                 @foreach ($vaccine_centers as $vcenter)
                     <option value="{{ $vcenter->id }}">{{ $vcenter->name }}</option>
                 @endforeach
             </x-select-input>
+            <x-input-error :messages="$errors->get('vaccine_center_id')" class="mt-2" />
         </div>
 
         <!-- Password -->

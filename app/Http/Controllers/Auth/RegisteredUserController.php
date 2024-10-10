@@ -37,6 +37,7 @@ class RegisteredUserController extends Controller
         $request->validate([
             "name" => ["required", "string", "max:255"],
             "vaccine_center_id" => ["required", "numeric"],
+            "nid" => ["required", "numeric", "unique:" . User::class],
             "email" => [
                 "required",
                 "string",
@@ -52,6 +53,7 @@ class RegisteredUserController extends Controller
             "name" => $request->name,
             "email" => $request->email,
             "vaccine_center_id" => $request->vaccine_center_id,
+            "nid" => $request->nid,
             // 'password' => Hash::make($request->password),
         ]);
 
