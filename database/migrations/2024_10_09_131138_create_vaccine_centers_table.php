@@ -14,6 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->string("name", 128);
             $table->unsignedSmallInteger("daily_limit");
+            $table->date("available_day");
+            $table->unsignedSmallInteger("available_day_booked")->default(0);
             $table->timestamps();
         });
     }
