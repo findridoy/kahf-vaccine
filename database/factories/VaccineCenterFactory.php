@@ -19,6 +19,7 @@ class VaccineCenterFactory extends Factory
         return [
             "name" => fake()->unique()->company(),
             "daily_limit" => fake()->numberBetween(3, 20),
+            "available_day" => get_next_weekday(),
         ];
     }
 }
