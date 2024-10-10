@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->timestamp("email_verified_at")->nullable();
             $table->string("password")->default(""); // nullable will be good if it is a hard decission. We assume that password will be required later.
             $table->foreignIdFor(VaccineCenter::class)->constrained(); // cascade decision can be made with a strategy
+            $table->date("vaccine_schedule")->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
