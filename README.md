@@ -1,3 +1,35 @@
+# How to run this project in development mode
+1. clone the project (which already you have done ;)
+2. run `cp .env.example .env` // create a file .env and then copy all content from .env.example to .env
+3. run `composer update`
+4. run `php artisan key:generate`
+5. run `npm install`
+6. run `php artisan migrate` On prompt, **YES** to create sqlite db
+7. run `php artisan migrate:fresh --seed`
+
+Now we have to run below 4 command in 4 terminal or tmux(4 pane)
+1. `php artisan serve`
+2. `npm run dev`
+3. `php artisan schedule:work`
+4. `php artisan queue:listen`
+
+Now,
+open brower and hit http://localhost:8000 (or any other port if 8000 was not available, check terminal output for correct port)
+Search with any random nid and you will get a status "not registered" and a link to register.
+Register with at least one user to test notification sending.
+
+Note that:
+If you are testing at thursday or friday then you will not get notification in next section
+so modify the db and set user vaccine_schedule column in users table to tomorrow date.
+
+Update VACCINE_REMINDER_SENT_HOUR="21:00" in the .env and set a recent future time so that schedule command run asap.
+Now restart schedule command on terminal
+
+After schedule run check laravel log at storage/logs/laravel.log and you will see the mail sent
+
+Thank you.
+
+
 # How to make search faster
 When users search an item to get status, we are querying the data with the nid column.
 This nid column has a unique index, so we will get benefit of indexing, which will help us
