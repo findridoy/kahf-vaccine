@@ -9,8 +9,9 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
-class ScheduleVaccine
+class ScheduleVaccine implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -25,22 +26,29 @@ class ScheduleVaccine
      */
     public function handle(Registered $event): void
     {
-        $user = $event->user;
-        $vaccineCenter = $user->vaccineCenter;
+        try {
+            $user = $event->user;
+            $vaccineCenter = $user->vaccineCenter;
 
-        if ($this->canNotUseCurrentAvailableDay($vaccineCenter)) {
-            $nextWeekDay = $vaccineCenter->setNextAvailableDay();
+            if ($this->canNotUseCurrentAvailableDay($vaccineCenter)) {
+                $nextWeekDay = $vaccineCenter->setNextAvailableDay();
 
-            $this->setVaccineSchedule($user, $vaccineCenter, $nextWeekDay);
+                $this->setVaccineSchedule($user, $vaccineCenter, $nextWeekDay);
 
-            return;
+                return;
+            }
+
+            $this->setVaccineSchedule(
+                $user,
+                $vaccineCenter,
+                $vaccineCenter->available_day
+            );
+        } catch (Throwable $e) {
+            Log::error(
+                "scheduling vaccine date for user: " . $e->getMessage(),
+                [$user->id]
+            );
         }
-
-        $this->setVaccineSchedule(
-            $user,
-            $vaccineCenter,
-            $vaccineCenter->available_day
-        );
     }
 
     private function setVaccineSchedule(
