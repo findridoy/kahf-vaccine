@@ -20,6 +20,12 @@ return new class extends Migration {
             $table->string("nid", 32)->unique();
             $table->foreignIdFor(VaccineCenter::class)->constrained(); // cascade decision can be made with a strategy
             $table->date("vaccine_schedule")->nullable();
+            $table
+                ->boolean("vaccine_notify")
+                ->default(false)
+                ->comment(
+                    "0 when no notification sent to this user yet for vaccine reminder. 1 if notification has been sent"
+                );
             $table->rememberToken();
             $table->timestamps();
         });
