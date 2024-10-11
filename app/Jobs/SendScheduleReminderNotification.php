@@ -35,6 +35,10 @@ class SendScheduleReminderNotification implements ShouldQueue
 
             // If you want to send more notification to another channel. ex - SMS
             // then we can sent from here
+            //
+            //
+            $this->user->vaccine_notify = 1;
+            $this->user->save();
         } catch (Throwable $e) {
             Log::error("sending vaccine schedule mail: " . $e->getMessage(), [
                 $this->user->id,
