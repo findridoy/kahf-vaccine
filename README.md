@@ -12,3 +12,9 @@ If not found, then we will call the database, get the schedule_date, and store i
 This way, once the schedule_date is in cache, we can get fast speed for the search.
 
 And for the cache eviction policy, we can use the LRU (Least Recently Used) technique.
+
+
+# Additional requirment of sending SMS
+If in future we get a requirment to send SMS, we just have to modify SendScheduleReminderNotification and
+append the code for sending sms in the handle method. We can use helper_fuction/Third party solution/API call or
+a custom class to send SMS.
