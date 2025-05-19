@@ -36,4 +36,8 @@ class SearchController extends Controller
 
         return back()->with("status", $vaccinated);
     }
+
+    public function test(Request $request){
+        return "it is working";
+    }
 }
